@@ -1,0 +1,44 @@
+{
+    "events": [
+        {
+            "event_id": 1,
+            "event_name":"ブロックチェーン開発",
+            "about":"ブロックチェーンNEMを用いたシステム開発",
+            "begin":201907,
+            "fin":201912,
+            "tag":"IT"
+        },
+        {
+            "event_id":2,
+            "event_name":"Lean LaunchPad",
+            "about":"リーンスタートアップや顧客開発モデル、ビジネスモデルキャンバスなどの新規事業開発のための手法を実践的に学びながらゼロイチ力を身につける講座です。",
+            "begin":201907,
+            "fin":201912,
+            "tag": "IT"
+        },
+        {
+            "event_id": 3,
+            "event_name": "Sotaハッカソン",
+            "about": "コミュニケーションろぼっとsotaを用いたハッカソン",
+            "begin": 201906,
+            "fin": 201909,
+            "tag": "IT"
+        },
+        {
+            "event_id": 4,
+            "event_name": "hoge",
+            "about": "hogehoge する",
+            "begin": 201906,
+            "fin": 201907,
+            "tag": "music"
+        },
+        {
+            "event_id": 5,
+            "event_name": "fuga",
+            "about": "fugafuga する",
+            "begin": 201906,
+            "fin": 201906,
+            "tag": "design"
+        }
+    ]
+}
