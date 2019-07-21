@@ -5,7 +5,6 @@ import configureStore from '../src/stores/store';
 
 export default class MyApp extends App {
     render() {
-        console.log('MyApp!');
         const { Component, pageProps } = this.props;
         return (
             <Container>

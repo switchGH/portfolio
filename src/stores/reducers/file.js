@@ -16,7 +16,6 @@ const initialState = {
 
 const file = createReducer({
     [fetchNemFile]: (state, action) => {
-        console.log('fetch file reducing!');
         return state;
     }
 }, initialState);

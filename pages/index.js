@@ -18,10 +18,6 @@ class Home extends Component {
     onClick() {
         const { dispatch } = this.props;
         const { address, isEncrypted } = this.state;
-        console.log('fetch clieked!');
-        console.log(`current address: ${address}`);
-        console.log(`is Encrypted: ${isEncrypted}`);
-
         dispatch(fetchNemFile({ address }));
     }
 

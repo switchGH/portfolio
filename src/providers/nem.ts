@@ -21,13 +21,21 @@ import { Util } from '../util/util';
 
 export class NemProvider {
   constructor() {
-    const q = localStorage.getItem('q');
-    const mode = Util.getQueryVariable('mode');
-    if(mode === 'testnet') {
-      NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
-    } else {
-      NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
-    }
+      const mode = 'testnet';
+      if(mode === 'testnet') {
+          NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+      } else {
+          NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
+      }
+      this.getAllTransactions = this.getAllTransactions.bind(this);
+      this.allTransactions = this.allTransactions.bind(this);
+      this.createTransactions = this.createTransactions.bind(this);
+      this.sendTransaction = this.sendTransaction.bind(this);
+      this.createSimpleWallet = this.createSimpleWallet.bind(this);
+      this.getPrivateKey = this.getPrivateKey.bind(this);
+      this.getMetaData = this.getMetaData.bind(this);
+      this.mergeBinaryToBase64 = this.mergeBinaryToBase64.bind(this);
+      this.decodeMessage = this.decodeMessage.bind(this);
   }
 
   /**
@@ -55,6 +63,8 @@ export class NemProvider {
       transactions = <TransferTransaction[]>transactions.filter(x => x.type == TransactionTypes.TRANSFER);
       return transactions.reverse(); // 配列の要素を反転させる
     } catch(e) {
+        console.log('an error has occured');
+        console.log(e);
       return null;
     }
   }
