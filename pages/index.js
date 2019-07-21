@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Link from 'next/link';
 import Head from '../components/head';
 import Nav from '../components/nav';
+import { 
+    fetchNemFile
+} from '../src/stores/actions';
 
-export default class Home extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -12,10 +16,13 @@ export default class Home extends Component {
         }
     }
     onClick() {
+        const { dispatch } = this.props;
         const { address, isEncrypted } = this.state;
         console.log('fetch clieked!');
         console.log(`current address: ${address}`);
         console.log(`is Encrypted: ${isEncrypted}`);
+
+        dispatch(fetchNemFile({ address }));
     }
 
     changeAddress(e) {
@@ -88,3 +95,5 @@ export default class Home extends Component {
         )
     }
 }
+
+export default connect(datas => datas)(Home);

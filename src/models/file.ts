@@ -8,7 +8,12 @@ export class MetaData {
   length:number = 0;
   
   constructor(fields: any) {
-    Object.assign(this, fields);
+      /*
+      for(const f of Object.keys(fields)) {
+          this[f] = fields[f];
+      }
+       */
+      Object.assign(this, fields);
   }
   valid() {
     if(
