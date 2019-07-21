@@ -3,6 +3,10 @@ import Link from 'next/link';
 import Head from '../components/head';
 import Nav from '../components/nav';
 
+const onClick = () => {
+     console.log('Fetch clicked!');
+}
+
 const Home = () => (
     <div>
         <Head title="Home" />
@@ -23,7 +27,7 @@ const Home = () => (
             ></input>
         </div>
         <div>
-            <button onClick="fetch">Fetch</button>
+            <button onClick={onClick}>Fetch</button>
         </div>
 
 
