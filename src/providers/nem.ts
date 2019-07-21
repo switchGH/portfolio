@@ -70,7 +70,11 @@ export class NemProvider {
   }
 
   private allTransactions(address:string, hash:string = '') {
-    const accountHttp = new AccountHttp();
+      const accountHttp = new AccountHttp({
+          protocol: 'https',
+          domain: 'nis.mosin.jp',
+          port: '443'
+      });
     return accountHttp.allTransactions(new Address(address), {hash: hash, pageSize: 100});
   }
 
