@@ -21,8 +21,7 @@ import { Util } from '../util/util';
 
 export class NemProvider {
   constructor() {
-      const mode = 'testnet';
-      if(mode === 'testnet') {
+      if(false) {
           NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
       } else {
           NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
@@ -43,9 +42,9 @@ export class NemProvider {
    * @param address 
    */
   async getAllTransactions(address:string) {
+      let transactions: Transaction[] = [];
     try {
       //let transactions:TransactionInfo[] = [];
-      let transactions:Transaction[] = [];
       let loop:boolean = true;
       while(loop) {
         let hash:string = '';
@@ -65,16 +64,20 @@ export class NemProvider {
     } catch(e) {
         console.log('an error has occured');
         console.log(e);
-      return null;
+        return transactions.reverse();
     }
   }
 
   private allTransactions(address:string, hash:string = '') {
-      const accountHttp = new AccountHttp({
+      const accountHttp = new AccountHttp([{
           protocol: 'https',
-          domain: 'nis.mosin.jp',
-          port: '443'
-      });
+          //domain: 'nistest.opening-line.jp',
+          domain: 'nismain01.opening-line.jp',
+
+          port: 7891
+          //domain: 'nis.mosin.jp',
+          //port: '443'
+      }]);
     return accountHttp.allTransactions(new Address(address), {hash: hash, pageSize: 100});
   }
 
@@ -146,8 +149,12 @@ export class NemProvider {
       let cnt = 0;
       for (const t of transaction) {
         const msg:any = this.decodeMessage(t, privKey);
+          console.log('msg is below');
+        console.log(msg);
         if (msg !== '' && Util.isJson(msg)) {
           const obj = JSON.parse(msg);
+            console.log('obj is below');
+            console.log(obj);
           const binary = new Binary(obj);
           if (binary.valid()) {
             binaries.push(binary);
@@ -161,9 +168,10 @@ export class NemProvider {
       }
       return base64.join('');
     } catch (e) {
+        console.log('an error has occured!');
       console.log(e);
     }
-    return '';
+    return base64.join('');
   }
 
   decodeMessage(transaction: TransferTransaction, privKey: string = '') {
