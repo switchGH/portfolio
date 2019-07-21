@@ -4,11 +4,31 @@ import Head from '../components/head';
 import Nav from '../components/nav';
 
 export default class Home extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            address: '',
+            isEncrypted: false,
+        }
+    }
     onClick() {
-        console.log('fetch clicked!');
+        const { address, isEncrypted } = this.state;
+        console.log('fetch clieked!');
+        console.log(`current address: ${address}`);
+        console.log(`is Encrypted: ${isEncrypted}`);
+    }
+
+    changeAddress(e) {
+        this.setState({address: e.target.value});
+    }
+
+    changeIsEncrypted(e) {
+        const { isEncrypted } = this.state;
+        this.setState({isEncrypted: !isEncrypted});
     }
 
     render() {
+        const { address, isEncrypted } = this.state;
         return (
         <div>
             <Head title="Home" />
@@ -16,12 +36,12 @@ export default class Home extends Component {
                 <h1 className="title">NEMファイル共有システム</h1>
             </div>
             <div className="input-wrapper">
-                <input type="text" placeholder="Please NEM Address." value="{address}"/>
+                <input type="text" placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} value={address}/>
             </div>
-            <div class="encrypt-wrapper">
-                <div class="form-wrapper">
-                    <input type="checkbox" class="encrypt" onChange="" id="encrypt" />
-                    <label for="encrypt">File enctypted?</label>
+            <div >
+                <div >
+                    <input type="checkbox" onChange={this.changeIsEncrypted.bind(this)} value={isEncrypted} id="encrypt" />
+                    <label>File enctypted?</label>
                 </div>
                 <input
                     type="password"
