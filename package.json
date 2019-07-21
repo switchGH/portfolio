@@ -3,11 +3,20 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "-d": "next build && pm2 start npm --name 'next' -- run start"
   },
   "dependencies": {
+    "nem-library": "^2.0.0-RC4",
     "next": "^9.0.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "rxjs": "^5.5.12",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^12.6.6",
+    "@types/react": "^16.8.23",
+    "@zeit/next-typescript": "1.1.1"
   }
 }
