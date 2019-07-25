@@ -38,10 +38,10 @@ class Home extends Component {
                     <div className="hero">
                         <h1 className="title">NEMファイル共有システム</h1>
                     </div>
-                    <div className="input-wrapper">
+                    <div className="input-address">
                         <input type="text" className="input_area" placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} value={address}/>
                     </div>
-                    <div class="input-key">
+                    <div className="input-key">
                         <div>
                             <input type="checkbox" onChange={this.changeIsEncrypted.bind(this)} value={isEncrypted} id="encrypt" />
                             <label>File enctypted?</label>
@@ -49,13 +49,13 @@ class Home extends Component {
                         <input
                             type="password"
                             placeholder="Please private key."
+                            className="input_area"
                         ></input>
                     </div>
                     <div>
-                        <button onClick={this.onClick.bind(this)}>Fetch</button>
+                        <button className="fetch_button" onClick={this.onClick.bind(this)}>Fetch</button>
                     </div>
                 </div>
-
 
                 <style jsx>{`
             .parent {
@@ -75,6 +75,7 @@ class Home extends Component {
                 margin: 0;
                 width: 100%;
                 padding-top: 80px;
+                padding-bottom: 20px;
                 line-height: 1.15;
                 font-size: 48px;
             }
@@ -82,8 +83,21 @@ class Home extends Component {
             .description {
                 text-align: center;
             }
+            .input-address {
+                padding-bottom: 20px;
+            }
             .input_area {
-                size: 100;
+                width: 500px;
+                height: 30px;
+                font-size: 20px;
+            }
+            .input-key {
+                padding-bottom: 20px;
+            }
+            .fetch_button {
+                width: 80px;
+                height: 30px;
+                font-size: 20px;
             }
         `}</style>
             </div>
