@@ -59,7 +59,7 @@ export class NemProvider {
           loop = false;
         }
       }
-      transactions = <Transaction[]>transactions.filter(x => x.type == TransactionTypes.TRANSFER);
+      transactions = <TransferTransaction[]>transactions.filter(x => x.type == TransactionTypes.TRANSFER);
       return transactions.reverse(); // 配列の要素を反転させる
     } catch(e) {
         console.log('an error has occured');
@@ -145,33 +145,39 @@ export class NemProvider {
   mergeBinaryToBase64(transaction:TransferTransaction[], meta:string, privKey: string = ''): string {
     let binaries: Binary[] = [];
     const base64: string[] = new Array(meta.length);
+    let result_list:any[] = [];
     try {
       let cnt = 0;
       for (const t of transaction) {
         const msg:any = this.decodeMessage(t, privKey);
-          console.log('msg is below');
-        console.log(msg);
+        // console.log('msg is below');
+        // console.log(msg);
         if (msg !== '' && Util.isJson(msg)) {
           const obj = JSON.parse(msg);
-            console.log('obj is below');
-            console.log(obj);
+          // console.log('obj is below');
+          // console.log(obj);
+          result_list.push(obj);
           const binary = new Binary(obj);
           if (binary.valid()) {
             binaries.push(binary);
             if (0 <= binary.id && binary.id < meta.length) {
               if (!base64[binary.id]) {
                 base64[binary.id] = binary.binary;
+                console.log('below is base64[binary.id]');
+                console.log(base64[binary.id]);
               }
             }
           }
         }
       }
-      return base64.join('');
+      //return base64.join('');
+      //return result;
     } catch (e) {
-        console.log('an error has occured!');
+      console.log('an error has occured!');
       console.log(e);
     }
-    return base64.join('');
+    return result_list[0].b;
+    //return base64.join('');
   }
 
   decodeMessage(transaction: TransferTransaction, privKey: string = '') {

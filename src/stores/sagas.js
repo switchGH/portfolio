@@ -17,8 +17,9 @@ function* fetchFileFlow() {
         console.log(transactions);
         const metaData = yield call(nem.getMetaData, transactions, undefined);
         const base64 = yield call(nem.mergeBinaryToBase64, transactions, metaData, '');
-        console.log('meta data and base64 is below!');
-        console.log(metaData);
+        //console.log('meta data and base64 is below!');
+        //console.log(metaData);
+        console.log('base64 is below!');
         console.log(base64);
         if(metaData && base64) {
             yield put(successFetchNemFile({metaData, base64}));

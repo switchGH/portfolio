@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Head from '../components/head';
 
-import { 
+import {
     fetchNemFile
 } from '../src/stores/actions';
+
+import {
+    initialState
+} from '../src/models/file';
 
 class Home extends Component {
     constructor(props) {
@@ -55,6 +59,7 @@ class Home extends Component {
                     <div>
                         <button className="fetch_button" onClick={this.onClick.bind(this)}>Fetch</button>
                     </div>
+                    <img />
                 </div>
 
                 <style jsx>{`
