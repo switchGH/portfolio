@@ -61,7 +61,9 @@ class Home extends Component {
                     <div>
                         <button className="fetch_button" onClick={this.onClick.bind(this)}>Fetch</button>
                     </div>
-                    <img />
+                    <div className="image">
+                        <img src={file.base64} />
+                    </div>
                 </div>
 
                 <style jsx>{`
@@ -105,6 +107,9 @@ class Home extends Component {
                 width: 80px;
                 height: 30px;
                 font-size: 20px;
+            }
+            .image {
+                padding-top: 30px;
             }
         `}</style>
             </div>
