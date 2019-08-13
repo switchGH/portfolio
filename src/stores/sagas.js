@@ -22,6 +22,7 @@ function* fetchFileFlow() {
         console.log('base64 is below!');
         console.log(base64);
         if(metaData && base64) {
+            console.log('active!');
             yield put(successFetchNemFile({metaData, base64}));
         } else {
             console.log('FAILED FETCH NEM FILE');

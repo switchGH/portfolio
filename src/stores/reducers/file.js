@@ -22,7 +22,7 @@ const file = createReducer({
         return newState;
     },
     [successFetchNemFile]: (state, action) => {
-        const newState = Object.assign({}, state);
+        const newState = Object.assign({}, state, action);
         console.log(action);
         return newState;
 

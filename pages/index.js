@@ -35,6 +35,8 @@ class Home extends Component {
 
     render() {
         const { address, isEncrypted } = this.state;
+        const { file } = this.props;
+        console.log(file);
         return (
             <div class="parent">
                 <Head title="Home" />
