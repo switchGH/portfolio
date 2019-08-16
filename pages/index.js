@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Head from '../components/head';
 
+import Router from 'next/router';
+
 import {
     fetchNemFile
 } from '../src/stores/actions';
@@ -39,7 +41,7 @@ class Home extends Component {
         console.log(file);
         return (
             <div class="parent">
-                <Head title="Home" />
+                {/* <Head title="Get File" /> */}
                 <div className="body">
                     <div className="hero">
                         <h1 className="title">NEMファイル共有システム</h1>
@@ -63,6 +65,9 @@ class Home extends Component {
                     </div>
                     <div className="image">
                         <img src={file.base64} />
+                    </div>
+                    <div>
+                        Click <span onClick={() => Router.push('/input')}>Input File</span>
                     </div>
                 </div>
 
