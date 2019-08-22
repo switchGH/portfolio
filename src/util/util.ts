@@ -4,6 +4,7 @@ declare function unescape(s: string): string;
 
 export class Util {
   public static splitByLength(str:string, length:number) {
+    console.log('called splitByLength');
     var resultArray:string[] = [];
     // 文字列がない場合
     if(!str || !length || length < 1){

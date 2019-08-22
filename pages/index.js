@@ -67,7 +67,7 @@ class Home extends Component {
                         <img src={file.base64} />
                     </div>
                     <div>
-                        Click <span onClick={() => Router.push('/input')}>Input File</span>
+                        Click <span onClick={() => Router.push('/convertFile')}>Input File</span>
                     </div>
                 </div>
 

@@ -4,7 +4,7 @@ export class MetaData {
   type:string = '';
   size?:string;
   lastModified:number = 0;
-  encrypt?:boolean;
+  //encrypt?:boolean;
   length:number = 0;
   
   constructor(fields: any) {

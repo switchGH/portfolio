@@ -2,34 +2,54 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Router from 'next/router';
+import {
+    convertFile
+} from '../src/stores/actions';
 
-class Input extends Component {
+class ConvertFile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: null
+            address: '',
+            file: null,
         };
     }
 
     onClick() {
+        const { address, file } = this.state;
+        const { dispatch } = this.props;
+        console.log('this.state in onClick');
         console.log(this.state);
+        dispatch(convertFile({ address, file }));
+    }
+
+    changeAddress(e) {
+        this.setState({address: e.target.value});
     }
 
     changeFile(e) {
-        this.setState({file: e.target.value});
+        this.setState({file: e.target.files});
     }
 
     render() {
-        const {file} = this.state;
+        const { file } = this.state;
+        const { transaction } = this.props;
         return (
             <div className="parent">
                 {/* <Head title="Input File" /> */}
                 <div className="body">
                     <h1 className="title">NEMファイル共有システム</h1>
+                    <div className="input_address">
+                        <input type="text" className="input_area" placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} />
+                    </div>
                     <div className="input_file">
-                        <input type="file" name="file" size="30" onChange={this.changeFile.bind(this)} value={file} />
+                        <input type="file" id="file" size="30" onChange={this.changeFile.bind(this)} />
                     </div>
                     <button className="convert_button" onClick={this.onClick.bind(this)}>Convert</button>
+                    <div>
+                        <p>{ transaction }</p>
+                    </div>
+
                     <div>
                         Click <span onClick={() => Router.push('/')}>Get File</span>
                     </div>
@@ -54,6 +74,14 @@ class Input extends Component {
                         font-size: 48px;
                         text-align: center;
                     }
+                    .input_address {
+                        padding-bottom: 20px;
+                    }
+                    .input_area {
+                        width: 500px;
+                        height: 30px;
+                        font-size: 20px;
+                    }
                     .input_file {
                         height: 30px;
                     }
@@ -66,4 +94,4 @@ class Input extends Component {
     }
 }
 
-export default connect(datas => datas)(Input);
+export default connect(datas => datas)(ConvertFile);
