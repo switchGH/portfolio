@@ -30,10 +30,8 @@ export class Convert {
   convertProgress: string[] = [];
   sumFee: number = 0;
   fileToUpload: any = null;
-  
-  constructor(
-    public nem: NemProvider
-  ) {
+
+  constructor(public nem: NemProvider) {
   }
 
   setAddress(address: string) {
@@ -99,13 +97,14 @@ export class Convert {
     console.log(this.cAddress);
     console.log(this.binaries);
 
+    console.log(this.nem);
+
     for (let binary of this.binaries) {
-      console.log(binary);
+     const b = JSON.stringify(binary);
+     // console.log(b);
+     const transaction = this.nem.createTransactions(b, this.cAddress);
+    //  console.log(transaction);
     }
-    // for (var i = 0; i < this.binaries.length; i++) {
-    //   var item = this.binaries[i];
-    //   console.log(item);
-    // }
     // if (this.cAddress == '') {
     //   return;
     // }

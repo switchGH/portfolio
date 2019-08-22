@@ -82,6 +82,7 @@ export class NemProvider {
   }
 
   createTransactions(message:string = '', address:string = '') {
+    console.log('called createTransaction');
     if(address == ''){
       const wallet:any = this.createSimpleWallet();
       address = wallet.address.value;
