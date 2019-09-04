@@ -8,10 +8,6 @@ import {
     fetchNemFile
 } from '../src/stores/actions';
 
-import {
-    initialState
-} from '../src/models/file';
-
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -38,7 +34,6 @@ class Home extends Component {
     render() {
         const { address, isEncrypted } = this.state;
         const { file } = this.props;
-        console.log(file);
         return (
             <div class="parent">
                 {/* <Head title="Get File" /> */}

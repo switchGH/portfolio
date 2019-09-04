@@ -9,8 +9,9 @@ const convert = new Convert();
 import {
     fetchNemFile,
     successFetchNemFile,
-    convertFile
-
+    convertFile,
+    generateWallet,
+    successGenerateWallet
 } from './actions';
 
 function* fetchFileFlow() {
@@ -18,13 +19,17 @@ function* fetchFileFlow() {
         const { payload } = yield take(fetchNemFile); // Actionを待つ、イベントの発生を待つ
         const { address } = payload;
         const transactions = yield call(nem.getAllTransactions, address); // Promiseの完了を待つ
-        // console.log(transactions);
+        console.log('below is transaction');
+        console.log(transactions);
         const metaData = yield call(nem.getMetaData, transactions, undefined);
+        if(!metaData){
+            throw new Error('metaDataがありません');
+        }
+        console.log('meta data and base64 is below!');
+        console.log(metaData);
         const base64 = yield call(nem.mergeBinaryToBase64, transactions, metaData, '');
-        //console.log('meta data and base64 is below!');
-        //console.log(metaData);
-        // console.log('base64 is below!');
-        // console.log(base64);
+        console.log('base64 is below!');
+        console.log(base64);
         if(metaData && base64) {
             console.log('active!');
             yield put(successFetchNemFile({metaData, base64})); // Actionをdispatchする
@@ -56,7 +61,25 @@ function* convertFileFlow() {
     }
 }
 
+function* generateWalletFlow() {
+    while(true) {
+        const { payload } = yield take(generateWallet);
+        const { walletName } = payload;
+
+        convert.generateWallet(walletName);
+        const generate_address = convert.getAddress();
+        const generate_privateKey = convert.getPrivateKey();
+
+        if(generate_address && generate_privateKey) {
+            yield put(successGenerateWallet({generate_address, generate_privateKey}));
+        }else {
+            console.log('FAILED GENERATE WALLET');
+        }
+    }
+}
+
 export default function* rootSaga() {
     yield fork(fetchFileFlow);
     yield fork(convertFileFlow);
+    yield fork(generateWalletFlow);
 }

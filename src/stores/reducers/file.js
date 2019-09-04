@@ -2,9 +2,8 @@ import { createAction, createReducer } from 'redux-act';
 import {
     fetchNemFile,
     successFetchNemFile,
-    convertFile
+    convertFile,
 } from '../actions';
-import { ConfirmedTransactionListener } from 'nem-library';
 
 const initialState = {
     console: [],
@@ -16,7 +15,7 @@ const initialState = {
     imageBase64: '',
     audioBase64: '',
     transation: '',
-    address: ''
+    address: '',
 };
 
 const file = createReducer({
@@ -34,13 +33,6 @@ const file = createReducer({
         const newState = Object.assign({}, state, action);
         return newState;
     },
-    // [successConvertFile]: (state, action) => {
-    //     const newState = Object.assign({}, state);
-    //     console.log('below is action');
-    //     console.log(action);
-    //     newState.transation = action;
-    //     return newState;
-    // }
 }, initialState);
 
 export default file;

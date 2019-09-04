@@ -17,7 +17,7 @@ export class Convert {
   // imageBase64: string = '';
   // audioBase64: string = '';
 
-  // walletName: string = '';
+  walletName: string = '';
   cAddress: string = '';
   privateKey: string = '';
   /**
@@ -30,8 +30,9 @@ export class Convert {
   convertProgress: string[] = [];
   sumFee: number = 0;
   fileToUpload: any = null;
+  nem: NemProvider = new NemProvider();
 
-  constructor(public nem: NemProvider) {
+  constructor() {
   }
 
   setAddress(address: string) {
@@ -58,11 +59,14 @@ export class Convert {
   }
 
   createBase64() {
+    if(!this.fileToUpload){
+      throw new Error('ファイルがありません');
+    }
     console.log('called createBase64');
     const fr = new FileReader();
-    fr.onload = (e: any) => {
+    fr.onload = async (e: any) => {
       // console.log(e.target.result);
-      const base64Array = Util.splitByLength(e.target.result, 950);
+      const base64Array = await Util.splitByLength(e.target.result, 950);
       // console.log(base64Array);
       // メタデータの登録
       this.cMetaData = new MetaData({
@@ -84,26 +88,29 @@ export class Convert {
         })
         this.binaries.push(binary);
         // const transaction = this.nem.createTransactions(base64);
-        // console.log(transaction);
+        //console.log(transaction);
       }
       // console.log(this.binaries);
+      this.createTransaction();
     };
     fr.readAsDataURL(this.fileToUpload);
-    this.createTransaction();
   }
 
   createTransaction() {
+    this.nem = new NemProvider();
     console.log('called createTransaction');
-    console.log(this.cAddress);
-    console.log(this.binaries);
+    // console.log(this.cAddress);
+    // console.log(this.binaries);
 
-    console.log(this.nem);
+    // console.log(this.nem);
 
+    
     for (let binary of this.binaries) {
-     const b = JSON.stringify(binary);
-     // console.log(b);
-     const transaction = this.nem.createTransactions(b, this.cAddress);
-    //  console.log(transaction);
+      const b = JSON.stringify(binary);
+      console.log(b);
+      let transaction = this.nem.createTransactions(b, this.cAddress);
+      console.log(transaction);
+      this.nem.sendTransaction(transaction, this.privateKey)
     }
     // if (this.cAddress == '') {
     //   return;
@@ -118,5 +125,24 @@ export class Convert {
     //   Util.sleep(500);
     //   console.log(binary.id);
     // }
+  }
+
+  generateWallet(walletName: string) {
+    console.log('called generateWallet');
+    this.walletName = walletName;
+    this.nem = new NemProvider();
+    const wallet: any = this.nem.createSimpleWallet(this.walletName);
+    //console.log('below is wallet');
+    //console.log(wallet.address.value);
+    this.cAddress = wallet.address.value;
+    this.privateKey = this.nem.getPrivateKey(wallet);
+  }
+
+  getAddress() {
+    return this.cAddress;
+  }
+
+  getPrivateKey() {
+    return this.privateKey;
   }
 }

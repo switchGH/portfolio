@@ -19,13 +19,16 @@ import {
 import { MetaData, Binary } from '../models/file';
 import { Util } from '../util/util';
 
+NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+
 export class NemProvider {
   constructor() {
-      if(false) {
-          NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
-      } else {
-          NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
-      }
+      // NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+      // if(true) {
+      //     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+      // } else {
+      //     NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
+      // }
       this.getAllTransactions = this.getAllTransactions.bind(this);
       this.allTransactions = this.allTransactions.bind(this);
       this.createTransactions = this.createTransactions.bind(this);
@@ -70,11 +73,11 @@ export class NemProvider {
 
   private allTransactions(address:string, hash:string = '') {
       const accountHttp = new AccountHttp([{
-          protocol: 'https',
+          protocol: 'http',
           //domain: 'nistest.opening-line.jp',
-          domain: 'nismain01.opening-line.jp',
+          domain: 'nistest.opening-line.jp',
 
-          port: 7891
+          port: 7890
           //domain: 'nis.mosin.jp',
           //port: '443'
       }]);
@@ -93,6 +96,7 @@ export class NemProvider {
       new XEM(0),
       PlainMessage.create(message)
     );
+
     return transferTransaction;
   }
 
@@ -126,9 +130,11 @@ export class NemProvider {
   }
 
   getMetaData(transaction:TransferTransaction[], privKey: string = '') {
+    console.log('called getMetaData');
     try {
       for (const t of transaction) {
         const msg:any = this.decodeMessage(t, privKey);
+        // console.log(msg);
         if (msg !== '' && Util.isJson(msg)) {
           const obj:any = JSON.parse(msg);
           const metaData = new MetaData(obj);
@@ -144,6 +150,7 @@ export class NemProvider {
   }
 
   mergeBinaryToBase64(transaction:TransferTransaction[], meta:string, privKey: string = ''): string {
+    console.log('called mergeBinaryToBase64');
     let binaries: Binary[] = [];
     const base64: string[] = new Array(meta.length);
     let result_list:any[] = [];
@@ -151,12 +158,8 @@ export class NemProvider {
       let cnt = 0;
       for (const t of transaction) {
         const msg:any = this.decodeMessage(t, privKey);
-        // console.log('msg is below');
-        // console.log(msg);
         if (msg !== '' && Util.isJson(msg)) {
           const obj = JSON.parse(msg);
-          // console.log('obj is below');
-          // console.log(obj);
           result_list.push(obj);
           const binary = new Binary(obj);
           if (binary.valid()) {
