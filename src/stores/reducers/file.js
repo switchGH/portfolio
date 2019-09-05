@@ -11,16 +11,17 @@ const initialState = {
     base64: '',
     metaData: null,
     fetching: false,
-    fetched: false,
-    imageBase64: '',
-    audioBase64: '',
+    // fetched: false,
+    // imageBase64: '',
+    // audioBase64: '',
     transation: '',
     address: '',
+    privateKey: ''
 };
 
 const file = createReducer({
     [fetchNemFile]: (state, action) => {
-        const newState = Object.assign({}, state);
+        const newState = Object.assign({}, state, action);
         newState.fetching = true;
         return newState;
     },

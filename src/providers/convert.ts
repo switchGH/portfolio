@@ -39,6 +39,10 @@ export class Convert {
     this.cAddress = address;
   }
 
+  setPrivateKey(privateKey: string) {
+    this.privateKey = privateKey;
+  }
+
   setFile(files: FileList) {
     this.fileToUpload = files.item(0);
   }

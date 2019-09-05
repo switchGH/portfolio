@@ -17,19 +17,21 @@ import {
 function* fetchFileFlow() {
     while(true) {
         const { payload } = yield take(fetchNemFile); // Actionを待つ、イベントの発生を待つ
-        const { address } = payload;
+        const { address, privateKey } = payload;
+        // 全てのトランザクションを取得
         const transactions = yield call(nem.getAllTransactions, address); // Promiseの完了を待つ
         console.log('below is transaction');
         console.log(transactions);
-        const metaData = yield call(nem.getMetaData, transactions, undefined);
+        // トランザクションからメダデータを取得
+        const metaData = yield call(nem.getMetaData, transactions, privateKey);
         if(!metaData){
             throw new Error('metaDataがありません');
         }
-        console.log('meta data and base64 is below!');
-        console.log(metaData);
-        const base64 = yield call(nem.mergeBinaryToBase64, transactions, metaData, '');
-        console.log('base64 is below!');
-        console.log(base64);
+        // console.log('meta data and base64 is below!');
+        // console.log(metaData);
+        const base64 = yield call(nem.mergeBinaryToBase64, transactions, metaData, privateKey);
+        // console.log('base64 is below!');
+        // console.log(base64);
         if(metaData && base64) {
             console.log('active!');
             yield put(successFetchNemFile({metaData, base64})); // Actionをdispatchする
@@ -47,17 +49,8 @@ function* convertFileFlow() {
 
         convert.setAddress(address);
         convert.setFile(file);
-
+        // ファイルをBase64に変換し、トランザクションを作成する
         convert.createBase64();
-        //convert.createTransaction();
-        // const base64 = method();
-        // const transactions = method();
-        
-        // if(base64 && transactions){
-        //     yield put(successConertFile({base64, transactions}));
-        // } else {
-        //     console.log('FAILED CONVERT FILE');
-        // }
     }
 }
 

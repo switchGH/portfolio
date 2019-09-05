@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Head from '../components/head';
-
 import Router from 'next/router';
 
 import {
@@ -13,26 +12,32 @@ class Home extends Component {
         super(props);
         this.state = {
             address: '',
+            privateKey: '',
             isEncrypted: false,
         };
     }
+
     onClick() {
         const { dispatch } = this.props;
-        const { address, isEncrypted } = this.state;
-        dispatch(fetchNemFile({ address }));
+        const { address, privateKey } = this.state;
+        dispatch(fetchNemFile({ address, privateKey }));
     }
 
     changeAddress(e) {
-        this.setState({address: e.target.value});
+        this.setState({ address: e.target.value });
     }
 
     changeIsEncrypted(e) {
         const { isEncrypted } = this.state;
-        this.setState({isEncrypted: !isEncrypted});
+        this.setState({ isEncrypted: !isEncrypted });
+    }
+
+    changePrivateKey(e) {
+        this.setState({ privateKey: e.target.value });
     }
 
     render() {
-        const { address, isEncrypted } = this.state;
+        const { address, privateKey, isEncrypted } = this.state;
         const { file } = this.props;
         return (
             <div class="parent">
@@ -42,18 +47,14 @@ class Home extends Component {
                         <h1 className="title">NEMファイル共有システム</h1>
                     </div>
                     <div className="input-address">
-                        <input type="text" className="input_area" placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} value={address}/>
+                        <input type="text" className="input_area" placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} value={address} />
                     </div>
                     <div className="input-key">
                         <div>
                             <input type="checkbox" onChange={this.changeIsEncrypted.bind(this)} value={isEncrypted} id="encrypt" />
                             <label>File enctypted?</label>
                         </div>
-                        <input
-                            type="password"
-                            placeholder="Please private key."
-                            className="input_area"
-                        ></input>
+                        <input type="text" className="input_area" placeholder="Please private key." onChange={this.changePrivateKey.bind(this)} value={privateKey} />
                     </div>
                     <div>
                         <button className="fetch_button" onClick={this.onClick.bind(this)}>Fetch</button>
