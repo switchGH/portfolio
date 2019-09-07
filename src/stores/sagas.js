@@ -10,6 +10,7 @@ import {
     fetchNemFile,
     successFetchNemFile,
     convertFile,
+    successConvertFile,
     generateWallet,
     successGenerateWallet
 } from './actions';
@@ -45,12 +46,21 @@ function* fetchFileFlow() {
 function* convertFileFlow() {
     while(true) {
         const { payload } = yield take(convertFile);
-        const { address, file } = payload;
+        const { address, privateKey, file } = payload;
 
         convert.setAddress(address);
+        convert.setPrivateKey(privateKey);
         convert.setFile(file);
         // ファイルをBase64に変換し、トランザクションを作成する
         convert.createBase64();
+        const array_transaction = convert.createTransaction();
+
+        if(array_transaction){
+            console.log('active');
+            yield put(successConvertFile({array_transaction}));
+        }else {
+            console.log('FAILED CONVERT NEM FILE');
+        }
     }
 }
 
@@ -59,6 +69,7 @@ function* generateWalletFlow() {
         const { payload } = yield take(generateWallet);
         const { walletName } = payload;
 
+        // ウォレットを作成する
         convert.generateWallet(walletName);
         const generate_address = convert.getAddress();
         const generate_privateKey = convert.getPrivateKey();

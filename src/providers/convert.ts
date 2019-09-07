@@ -95,40 +95,25 @@ export class Convert {
         //console.log(transaction);
       }
       // console.log(this.binaries);
-      this.createTransaction();
+      // this.createTransaction();
     };
     fr.readAsDataURL(this.fileToUpload);
   }
 
   createTransaction() {
-    this.nem = new NemProvider();
+    // this.nem = new NemProvider();
     console.log('called createTransaction');
-    // console.log(this.cAddress);
-    // console.log(this.binaries);
+    let array = [];
 
-    // console.log(this.nem);
-
-    
     for (let binary of this.binaries) {
       const b = JSON.stringify(binary);
       console.log(b);
       let transaction = this.nem.createTransactions(b, this.cAddress);
+      array.push(transaction);
       console.log(transaction);
       this.nem.sendTransaction(transaction, this.privateKey)
     }
-    // if (this.cAddress == '') {
-    //   return;
-    // }
-    // for (const binary of this.binaries) {
-    //   const b = JSON.stringify(binary);
-    //   console.log(b);
-    //   const transaction = this.nem.createTransactions(b, this.cAddress);
-    //   console.log('transaction');
-    //   console.log(transaction);
-    //   this.nem.sendTransaction(transaction, this.privateKey);
-    //   Util.sleep(500);
-    //   console.log(binary.id);
-    // }
+    return array;
   }
 
   generateWallet(walletName: string) {

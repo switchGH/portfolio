@@ -13,7 +13,7 @@ export const GENERATE_WALLET = 'GENERATE_WALLET';
 export const generateWallet = createAction(GENERATE_WALLET);
 
 export const SUCCESS_CONVERT_FILE = 'SUCCESS_CONVERT_FILE';
-export const successConertFile = createAction(SUCCESS_CONVERT_FILE);
+export const successConvertFile = createAction(SUCCESS_CONVERT_FILE);
 
 export const SUCCESS_FETCH_NEM_FILE = 'SUCCESS_FETCH_NEM_FILE';
 export const successFetchNemFile = createAction(SUCCESS_FETCH_NEM_FILE);
