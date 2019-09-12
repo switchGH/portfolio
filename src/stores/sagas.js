@@ -53,14 +53,14 @@ function* convertFileFlow() {
         convert.setFile(file);
         // ファイルをBase64に変換し、トランザクションを作成する
         convert.createBase64();
-        const array_transaction = convert.createTransaction();
+        //const array_transaction = convert.createTransaction();
 
-        if(array_transaction){
-            console.log('active');
-            yield put(successConvertFile({array_transaction}));
-        }else {
-            console.log('FAILED CONVERT NEM FILE');
-        }
+        // if(array_transaction){
+        //     console.log('active');
+        //     yield put(successConvertFile({array_transaction}));
+        // }else {
+        //     console.log('FAILED CONVERT NEM FILE');
+        // }
     }
 }
 

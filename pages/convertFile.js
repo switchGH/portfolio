@@ -28,8 +28,6 @@ class ConvertFile extends Component {
     onClick() {
         const { address, privateKey, file } = this.state;
         const { dispatch } = this.props;
-        // console.log('this.state in onClick');
-        // console.log(this.state);
         dispatch(convertFile({ address, privateKey, file }));
     }
 

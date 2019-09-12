@@ -95,7 +95,7 @@ export class Convert {
         //console.log(transaction);
       }
       // console.log(this.binaries);
-      // this.createTransaction();
+      this.createTransaction();
     };
     fr.readAsDataURL(this.fileToUpload);
   }
@@ -104,16 +104,21 @@ export class Convert {
     // this.nem = new NemProvider();
     console.log('called createTransaction');
     let array = [];
-
+    let count = 0;
     for (let binary of this.binaries) {
-      const b = JSON.stringify(binary);
-      console.log(b);
-      let transaction = this.nem.createTransactions(b, this.cAddress);
-      array.push(transaction);
-      console.log(transaction);
-      this.nem.sendTransaction(transaction, this.privateKey)
+      if(count == 0){
+        const b = JSON.stringify(binary);
+        console.log(b);
+        let transaction = this.nem.createTransactions(b, this.cAddress);
+        array.push(transaction);
+        console.log(transaction);
+        this.nem.sendTransaction(transaction, this.privateKey);// クロスドメインエラー発生
+      }else{
+        break;
+      }
+      count++;
     }
-    return array;
+    // return array;
   }
 
   generateWallet(walletName: string) {
