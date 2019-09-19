@@ -104,32 +104,26 @@ export class Convert {
     // this.nem = new NemProvider();
     console.log('called createTransaction');
     let array = [];
-    let count = 0;
     for (let binary of this.binaries) {
-      if(count == 0){
         const b = JSON.stringify(binary);
         console.log(b);
         let transaction = this.nem.createTransactions(b, this.cAddress);
-        array.push(transaction);
+        // array.push(transaction);
         console.log(transaction);
         this.nem.sendTransaction(transaction, this.privateKey);// クロスドメインエラー発生
-      }else{
-        break;
-      }
-      count++;
     }
-    // return array;
   }
 
   generateWallet(walletName: string) {
     console.log('called generateWallet');
     this.walletName = walletName;
     this.nem = new NemProvider();
-    const wallet: any = this.nem.createSimpleWallet(this.walletName);
+    const { simpleWallet, password }: any = this.nem.createSimpleWallet(this.walletName);
     //console.log('below is wallet');
     //console.log(wallet.address.value);
-    this.cAddress = wallet.address.value;
-    this.privateKey = this.nem.getPrivateKey(wallet);
+    this.cAddress = simpleWallet.address.value;
+    // this.privateKey = this.nem.getPrivateKey(simpleWallet); // 暗号化された秘密鍵が生成される
+    this.privateKey = simpleWallet.unlockPrivateKey(password);
   }
 
   getAddress() {

@@ -23,18 +23,13 @@ NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
 
 export class NemProvider {
   constructor() {
-      // NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
-      // if(true) {
-      //     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
-      // } else {
-      //     NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
-      // }
       this.getAllTransactions = this.getAllTransactions.bind(this);
       this.allTransactions = this.allTransactions.bind(this);
       this.createTransactions = this.createTransactions.bind(this);
       this.sendTransaction = this.sendTransaction.bind(this);
       this.createSimpleWallet = this.createSimpleWallet.bind(this);
-      this.getPrivateKey = this.getPrivateKey.bind(this);
+      // this.getPrivateKey = this.getPrivateKey.bind(this);
+      this.getBase64 = this.getBase64.bind(this);
       this.getMetaData = this.getMetaData.bind(this);
       this.mergeBinaryToBase64 = this.mergeBinaryToBase64.bind(this);
       this.decodeMessage = this.decodeMessage.bind(this);
@@ -100,10 +95,18 @@ export class NemProvider {
   }
 
   sendTransaction(transferTransaction:TransferTransaction, privateKey:string) {
-    const transactionHttp = new TransactionHttp();
+    const transactionHttp = new TransactionHttp([{
+      protocol: 'http',
+      domain: 'nistest.opening-line.jp',
+      port: 7890
+    }]);
+    console.log(transferTransaction.fee);
     const account = Account.createWithPrivateKey(privateKey);
+    console.log(account.address);
     const signedTransaction = account.signTransaction(transferTransaction);
-    transactionHttp.announceTransaction(signedTransaction).subscribe(x => console.log(x));
+    // console.log('transactionHttp');
+    // console.log(transactionHttp);
+    transactionHttp.announceTransaction(signedTransaction).subscribe(x => console.log(x.transactionHash));
   }
 
   /**
@@ -117,35 +120,90 @@ export class NemProvider {
       const address:any = simpleWallet.address;
       let a:string = address.value;
       if(name == '' || a.endsWith(name)){
-        return simpleWallet;
+        return {simpleWallet, password};
       }
     }
   }
 
-  getPrivateKey(wallet:SimpleWallet) {
-    // const password = new Password('password');
-    //return wallet.encryptedPrivateKey.decrypt(password);
-    return wallet.encryptedPrivateKey.encryptedKey;
-  }
+  // getPrivateKey(wallet:SimpleWallet) {
+  //   // const password = new Password('password');
+  //   //return wallet.encryptedPrivateKey.decrypt(password);
+  //   return wallet.encryptedPrivat1eKey.encryptedKey;
+  // }
 
-  getMetaData(transaction:TransferTransaction[], privKey: string = '') {
-    console.log('called getMetaData');
+  /**
+   * MetaDataを取得する
+   * @param transaction 
+   * @param privateKey 
+   */
+  getMetaData(transaction:TransferTransaction[], privateKey:string):any {
+    let msg:any, json:any;
+    let result:any = null;
     try {
-      for (const t of transaction) {
-        const msg:any = this.decodeMessage(t, privKey);
-        // console.log(msg);
-        if (msg !== '' && Util.isJson(msg)) {
-          const obj:any = JSON.parse(msg);
-          const metaData = new MetaData(obj);
-          if (metaData.valid()) {
-            return metaData;
+      for(const t of transaction) {
+        msg = this.decodeMessage(t, privateKey);
+        if(msg !== '' && Util.isJson(msg)) {
+          json = JSON.parse(msg);
+          // console.log(json);
+          const metaData = new MetaData(json);
+          // console.log(metaData.valid());
+          if(metaData.valid()){
+            result = metaData;
           }
         }
       }
-    } catch (e) {
+    }catch(e) {
       console.log(e);
     }
-    return null;
+    return result;
+  } 
+
+  // getMetaData(transaction:TransferTransaction[], privKey: string = ''):string {
+  //   console.log('called getMetaData');
+  //   try {
+  //     for (const t of transaction) {
+  //       const msg:any = this.decodeMessage(t, privKey);
+  //       console.log(msg);
+  //       if (msg !== '' && Util.isJson(msg)) {
+  //         const obj:any = JSON.parse(msg);
+  //         console.log('below is obj');
+  //         console.log(obj);
+  //         const metaData = new MetaData(obj);
+  //         if (metaData.valid()) {
+  //           // return metaData;
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  //   // return null;
+  // }
+
+  // クソコード　修正必要
+  getBase64(transaction:TransferTransaction[], privateKey: string = '') {
+    console.log('getMetaData');
+    let binaries: Binary[] = [];
+    const base64: string[] = new Array(2);
+    let msg:any, json:any;
+    for(const t of transaction) {
+      msg = this.decodeMessage(t, privateKey);
+      if(msg !== '' && Util.isJson(msg)) {
+        json = JSON.parse(msg);
+        //console.log(json);
+        const binary = new Binary(json);
+        if(binary.valid()) {
+          //console.log(binary);
+          binaries.push(binary);
+
+          if(0 <= binary.id) {
+            base64[binary.id] = binary.binary;
+            //console.log(base64[binary.id]);
+          }
+        }
+      }
+    }
+    return base64.join('');
   }
 
   mergeBinaryToBase64(transaction:TransferTransaction[], meta:string, privKey: string = ''): string {
@@ -157,6 +215,7 @@ export class NemProvider {
       let cnt = 0;
       for (const t of transaction) {
         const msg:any = this.decodeMessage(t, privKey);
+        //console.log(msg);
         if (msg !== '' && Util.isJson(msg)) {
           const obj = JSON.parse(msg);
           result_list.push(obj);
@@ -166,8 +225,8 @@ export class NemProvider {
             if (0 <= binary.id && binary.id < meta.length) {
               if (!base64[binary.id]) {
                 base64[binary.id] = binary.binary;
-                console.log('below is base64[binary.id]');
-                console.log(base64[binary.id]);
+                //console.log('below is base64[binary.id]');
+                //console.log(base64[binary.id]);
               }
             }
           }
@@ -179,11 +238,11 @@ export class NemProvider {
       console.log('an error has occured!');
       console.log(e);
     }
-    return result_list[0].b;
-    //return base64.join('');
+    return base64.join('');
   }
 
   decodeMessage(transaction: TransferTransaction, privKey: string = '') {
+    console.log('called decodeMessage');
     if (transaction.message.isPlain()) {
       const plainMessage = transaction.message as PlainMessage;
       return plainMessage.plain();
