@@ -14,7 +14,7 @@ class ConvertFile extends Component {
             address: '',
             privateKey: '',
             file: null,
-            walletName: ''
+            walletName: '',
         };
     }
 
@@ -44,7 +44,7 @@ class ConvertFile extends Component {
     }
 
     render() {
-        const { wallet } = this.props;
+        const { wallet, file } = this.props;
         return (
             <div className="parent">
                 {/* <Head title="Input File" /> */}
@@ -67,9 +67,20 @@ class ConvertFile extends Component {
                         <input type="file" id="file" size="30" onChange={this.changeFile.bind(this)} />
                     </div>
                     <button className="convert_button" onClick={this.onClick.bind(this)}>Convert</button>
-                    {/* <div>
-                        <p>{ transaction }</p>
-                    </div> */}
+                    <div className="output_transaction">
+                        <p>{ file.transactions }</p>
+                        {/* {
+                            (() => {
+                                if(file.transactions != undefined){
+                                    return <p>file.transactions</p>;
+                                    console.log(transactions[0])
+                                    for(let i = 0; i < file.transactions.length; i++){
+                                        components += <p>{ file.transactions[i] }</p>
+                                    }
+                                }
+                            })()
+                        } */}
+                    </div>
 
                     <div>
                         Click <span onClick={() => Router.push('/')}>Get File</span>

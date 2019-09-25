@@ -18,18 +18,21 @@ export class Convert {
   // audioBase64: string = '';
 
   walletName: string = '';
-  cAddress: string = '';
-  privateKey: string = '';
+  private cAddress: string = '';
+  private privateKey: string = '';
   /**
    * すべてのプロパティをコンストラクタで初期化する
    * 必要がある厳密なクラスチェックが含まれているので回避
    */
   cMetaData!: MetaData;
+  metaData_json: any = '';
+  metaData: string = '';
+  private transactions: string[] = [];
   // privateKey: string = '';
   binaries: Binary[] = [];
   convertProgress: string[] = [];
   sumFee: number = 0;
-  fileToUpload: any = null;
+  private fileToUpload: any = null;
   nem: NemProvider = new NemProvider();
 
   constructor() {
@@ -70,18 +73,19 @@ export class Convert {
     const fr = new FileReader();
     fr.onload = async (e: any) => {
       // console.log(e.target.result);
-      const base64Array = await Util.splitByLength(e.target.result, 950);
-      // console.log(base64Array);
+      const base64Array = await Util.splitByLength(e.target.result, 1000);
+      //console.log(base64Array);
       // メタデータの登録
-      this.cMetaData = new MetaData({
+      this.metaData_json = {
         v: '0.0.1',
         name: this.fileToUpload.name,
         type: this.fileToUpload.type,
-        length: this.fileToUpload.length,
+        length: base64Array.length,
         size: this.fileToUpload.size,
         lastModified: this.fileToUpload.lastModified
-      });
-      // console.log(this.cMetaData);
+      }
+      this.cMetaData = new MetaData(this.metaData_json);
+      //console.log(this.metaData);
 
       for(let i = 0;i < base64Array.length; i++) {
         const base64 = base64Array[i];
@@ -90,6 +94,7 @@ export class Convert {
           id: i,
           binary: base64
         })
+        
         this.binaries.push(binary);
         // const transaction = this.nem.createTransactions(base64);
         //console.log(transaction);
@@ -101,23 +106,31 @@ export class Convert {
   }
 
   createTransaction() {
-    // this.nem = new NemProvider();
     console.log('called createTransaction');
-    let array = [];
+    let transaction:any;
+
+    transaction = this.nem.createTransactions(JSON.stringify(this.metaData_json), this.cAddress);
+    //this.nem.sendTransaction(transaction, this.privateKey); // メタデータを送信
+    console.log(transaction);
+    this.transactions[0] = JSON.stringify(transaction);
+
+    // ファイルデータを送信
+    let count = 1;
     for (let binary of this.binaries) {
         const b = JSON.stringify(binary);
         console.log(b);
-        let transaction = this.nem.createTransactions(b, this.cAddress);
-        // array.push(transaction);
+        console.log(b.length);
+        transaction = this.nem.createTransactions(b, this.cAddress);
+        this.transactions[count] = JSON.stringify(transaction);
+        count++;
         console.log(transaction);
-        this.nem.sendTransaction(transaction, this.privateKey);// クロスドメインエラー発生
+        //this.nem.sendTransaction(transaction, this.privateKey);
     }
   }
 
   generateWallet(walletName: string) {
     console.log('called generateWallet');
     this.walletName = walletName;
-    this.nem = new NemProvider();
     const { simpleWallet, password }: any = this.nem.createSimpleWallet(this.walletName);
     //console.log('below is wallet');
     //console.log(wallet.address.value);
@@ -126,11 +139,15 @@ export class Convert {
     this.privateKey = simpleWallet.unlockPrivateKey(password);
   }
 
-  getAddress() {
+  getAddress():string {
     return this.cAddress;
   }
 
-  getPrivateKey() {
+  getPrivateKey():string {
     return this.privateKey;
+  }
+
+  getTransactions():string[] {
+    return this.transactions;
   }
 }

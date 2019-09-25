@@ -136,58 +136,36 @@ export class NemProvider {
    * @param transaction 
    * @param privateKey 
    */
-  getMetaData(transaction:TransferTransaction[], privateKey:string):any {
-    let msg:any, json:any;
-    let result:any = null;
+  getMetaData(transaction:TransferTransaction[], privateKey:string):string[] {
+    let msg:string, json:any;
+    let metaData_list:string[] = [];
     try {
       for(const t of transaction) {
         msg = this.decodeMessage(t, privateKey);
         if(msg !== '' && Util.isJson(msg)) {
           json = JSON.parse(msg);
-          // console.log(json);
           const metaData = new MetaData(json);
-          // console.log(metaData.valid());
           if(metaData.valid()){
-            result = metaData;
+            //console.log(metaData);
+            metaData_list.push(JSON.stringify(json));
           }
         }
       }
     }catch(e) {
       console.log(e);
     }
-    return result;
-  } 
-
-  // getMetaData(transaction:TransferTransaction[], privKey: string = ''):string {
-  //   console.log('called getMetaData');
-  //   try {
-  //     for (const t of transaction) {
-  //       const msg:any = this.decodeMessage(t, privKey);
-  //       console.log(msg);
-  //       if (msg !== '' && Util.isJson(msg)) {
-  //         const obj:any = JSON.parse(msg);
-  //         console.log('below is obj');
-  //         console.log(obj);
-  //         const metaData = new MetaData(obj);
-  //         if (metaData.valid()) {
-  //           // return metaData;
-  //         }
-  //       }
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   // return null;
-  // }
+    return metaData_list;
+  }
 
   // クソコード　修正必要
-  getBase64(transaction:TransferTransaction[], privateKey: string = '') {
+  getBase64(transactions:TransferTransaction[], privateKey: string = '') {
     console.log('getMetaData');
     let binaries: Binary[] = [];
     const base64: string[] = new Array(2);
     let msg:any, json:any;
-    for(const t of transaction) {
+    for(const t of transactions) {
       msg = this.decodeMessage(t, privateKey);
+      console.log(msg);
       if(msg !== '' && Util.isJson(msg)) {
         json = JSON.parse(msg);
         //console.log(json);
@@ -203,6 +181,7 @@ export class NemProvider {
         }
       }
     }
+    console.log(base64);
     return base64.join('');
   }
 
@@ -241,17 +220,19 @@ export class NemProvider {
     return base64.join('');
   }
 
-  decodeMessage(transaction: TransferTransaction, privKey: string = '') {
+  decodeMessage(transaction: TransferTransaction, privKey: string = ''):string {
     console.log('called decodeMessage');
+    let result: string = '';
     if (transaction.message.isPlain()) {
       const plainMessage = transaction.message as PlainMessage;
-      return plainMessage.plain();
+      result = plainMessage.plain();
     } else if (transaction.message.isEncrypted()) {
       const password = new Password('password');
       const wallet = SimpleWallet.createWithPrivateKey('simple wallet', password, privKey);
       const account = wallet.open(password);
       const msg = account.decryptMessage(transaction.message, transaction.signer!).payload;
-      return msg;
+      result = msg;
     }
+    return result;
   }
 }

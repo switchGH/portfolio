@@ -3,18 +3,19 @@ import {
     fetchNemFile,
     successFetchNemFile,
     convertFile,
+    successConvertFile
 } from '../actions';
 
 const initialState = {
     console: [],
     href: '#',
     base64: '',
-    metaData: null,
+    metaData: [],
     fetching: false,
     // fetched: false,
     // imageBase64: '',
     // audioBase64: '',
-    transation: '',
+    transactions: [],
     address: '',
     privateKey: ''
 };
@@ -34,6 +35,10 @@ const file = createReducer({
         const newState = Object.assign({}, state, action);
         return newState;
     },
+    [successConvertFile]: (state, action) => {
+        const newState = Object.assign({}, state, action);
+        return newState;
+    }
 }, initialState);
 
 export default file;

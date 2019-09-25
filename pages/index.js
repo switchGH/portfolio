@@ -39,6 +39,12 @@ class Home extends Component {
     render() {
         const { address, privateKey, isEncrypted } = this.state;
         const { file } = this.props;
+
+        let metaData_list = [];
+        for(let i in file.metaData){
+            metaData_list.push(<p>{ file.metaData[i] }</p>);
+        }
+
         return (
             <div class="parent">
                 {/* <Head title="Get File" /> */}
@@ -58,6 +64,10 @@ class Home extends Component {
                     </div>
                     <div>
                         <button className="fetch_button" onClick={this.onClick.bind(this)}>Fetch</button>
+                    </div>
+                    <div className="output-metaData">
+                        <p>取得データ数：{ file.metaData.length }</p>
+                        { metaData_list }
                     </div>
                     <div className="image">
                         <img src={file.base64} />
@@ -108,6 +118,11 @@ class Home extends Component {
                 width: 80px;
                 height: 30px;
                 font-size: 20px;
+            }
+            .output-metaData {
+            }
+            .metaData_output_area {
+                text-align: left;
             }
             .image {
                 padding-top: 30px;
