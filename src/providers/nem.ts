@@ -71,10 +71,7 @@ export class NemProvider {
           protocol: 'http',
           //domain: 'nistest.opening-line.jp',
           domain: 'nistest.opening-line.jp',
-
           port: 7890
-          //domain: 'nis.mosin.jp',
-          //port: '443'
       }]);
     return accountHttp.allTransactions(new Address(address), {hash: hash, pageSize: 100});
   }
@@ -165,7 +162,6 @@ export class NemProvider {
     let msg:any, json:any;
     for(const t of transactions) {
       msg = this.decodeMessage(t, privateKey);
-      console.log(msg);
       if(msg !== '' && Util.isJson(msg)) {
         json = JSON.parse(msg);
         //console.log(json);
@@ -173,7 +169,6 @@ export class NemProvider {
         if(binary.valid()) {
           //console.log(binary);
           binaries.push(binary);
-
           if(0 <= binary.id) {
             base64[binary.id] = binary.binary;
             //console.log(base64[binary.id]);
@@ -181,7 +176,8 @@ export class NemProvider {
         }
       }
     }
-    console.log(base64);
+    console.log(binaries);
+    //console.log(base64);
     return base64.join('');
   }
 

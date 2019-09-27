@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 import {
     convertFile,
-    generateWallet
+    createWallet
 } from '../src/stores/actions';
 
 class ConvertFile extends Component {
@@ -18,11 +18,10 @@ class ConvertFile extends Component {
         };
     }
 
-    onGenerateWallet() {
-        console.log('called onGenerateWallet');
+    onCreateWallet() {
         const { walletName } = this.state;
         const { dispatch } = this.props;
-        dispatch(generateWallet({ walletName }));
+        dispatch(createWallet({ walletName }));
     }
 
     onClick() {
@@ -52,9 +51,9 @@ class ConvertFile extends Component {
                     <h1 className="title">NEMファイル共有システム</h1>
                     <div className="generate_wallet">
                         <p className="text">アドレス生成</p>
-                        { wallet.generate_address && <p>Address：{ wallet.generate_address }</p> }
-                        { wallet.generate_privateKey && <p>PrivateKey：{ wallet.generate_privateKey }</p> }
-                        <button className="generate_button" onClick={this.onGenerateWallet.bind(this)}>Generate Wallet</button>
+                        { wallet.address && <p>Address：{ wallet.address }</p> }
+                        { wallet.privateKey && <p>PrivateKey：{ wallet.privateKey }</p> }
+                        <button className="generate_button" onClick={this.onCreateWallet.bind(this)}>Generate Wallet</button>
                     </div>
                     <div className="input_address">
                         <input type="text" className="input_area" placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} />

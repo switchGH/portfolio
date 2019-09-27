@@ -9,8 +9,8 @@ export const fetchNemFile = createAction(FETCH_NEM_FILE);
 export const CONVERT_FILE = 'CONVERT_FILE';
 export const convertFile = createAction(CONVERT_FILE);
 
-export const GENERATE_WALLET = 'GENERATE_WALLET';
-export const generateWallet = createAction(GENERATE_WALLET);
+export const CREATE_WALLET = 'CREATE_WALLET';
+export const createWallet = createAction(CREATE_WALLET);
 
 export const SUCCESS_CONVERT_FILE = 'SUCCESS_CONVERT_FILE';
 export const successConvertFile = createAction(SUCCESS_CONVERT_FILE);
@@ -18,5 +18,5 @@ export const successConvertFile = createAction(SUCCESS_CONVERT_FILE);
 export const SUCCESS_FETCH_NEM_FILE = 'SUCCESS_FETCH_NEM_FILE';
 export const successFetchNemFile = createAction(SUCCESS_FETCH_NEM_FILE);
 
-export const SUCCESS_GENERATE_WALLET = 'SUCCESS_GENERATE_WALLET';
-export const successGenerateWallet = createAction(SUCCESS_GENERATE_WALLET);
+export const SUCCESS_CREATE_WALLET = 'SUCCESS_CREATE_WALLET';
+export const successCreateWallet = createAction(SUCCESS_CREATE_WALLET);

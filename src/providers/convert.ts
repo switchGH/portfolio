@@ -1,7 +1,6 @@
 import { NemProvider } from './nem';
 import { Util } from '../util/util';
 import { MetaData, Binary } from '../models/file';
-import { TransferTransaction, Transaction } from 'nem-library';
 
 export class Convert {
   // testmode: boolean = false;
@@ -17,38 +16,23 @@ export class Convert {
   // imageBase64: string = '';
   // audioBase64: string = '';
 
-  walletName: string = '';
   private cAddress: string = '';
   private privateKey: string = '';
-  /**
-   * すべてのプロパティをコンストラクタで初期化する
-   * 必要がある厳密なクラスチェックが含まれているので回避
-   */
-  cMetaData!: MetaData;
-  metaData_json: any = '';
-  metaData: string = '';
+  private cMetaData!: MetaData;
+  private metaData_json: any = '';
   private transactions: string[] = [];
   // privateKey: string = '';
-  binaries: Binary[] = [];
-  convertProgress: string[] = [];
-  sumFee: number = 0;
+  private binaries: Binary[] = [];
+  //private sumFee: number = 0;// 今後使う予定
   private fileToUpload: any = null;
-  nem: NemProvider = new NemProvider();
+  private nem: NemProvider = new NemProvider();
 
-  constructor() {
-  }
-
-  setAddress(address: string) {
+  constructor(address: string, privateKey: string, file: FileList) {
     this.cAddress = address;
-  }
-
-  setPrivateKey(privateKey: string) {
     this.privateKey = privateKey;
+    this.fileToUpload = file.item(0);
   }
 
-  setFile(files: FileList) {
-    this.fileToUpload = files.item(0);
-  }
   getFile(file: any) {
     return file;
   }
@@ -60,9 +44,8 @@ export class Convert {
 
   initConvert() {
      // this.cMetaData = null;
-    this.convertProgress = [];
     this.binaries = [];
-    this.sumFee = 0;
+    //this.sumFee = 0;
   }
 
   createBase64() {
@@ -126,25 +109,6 @@ export class Convert {
         console.log(transaction);
         //this.nem.sendTransaction(transaction, this.privateKey);
     }
-  }
-
-  generateWallet(walletName: string) {
-    console.log('called generateWallet');
-    this.walletName = walletName;
-    const { simpleWallet, password }: any = this.nem.createSimpleWallet(this.walletName);
-    //console.log('below is wallet');
-    //console.log(wallet.address.value);
-    this.cAddress = simpleWallet.address.value;
-    // this.privateKey = this.nem.getPrivateKey(simpleWallet); // 暗号化された秘密鍵が生成される
-    this.privateKey = simpleWallet.unlockPrivateKey(password);
-  }
-
-  getAddress():string {
-    return this.cAddress;
-  }
-
-  getPrivateKey():string {
-    return this.privateKey;
   }
 
   getTransactions():string[] {

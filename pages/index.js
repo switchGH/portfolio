@@ -66,7 +66,7 @@ class Home extends Component {
                         <button className="fetch_button" onClick={this.onClick.bind(this)}>Fetch</button>
                     </div>
                     <div className="output-metaData">
-                        <p>取得データ数：{ file.metaData.length }</p>
+                        <p>取得データ数：{ file.metaData.length } , トランザクション数：{ file.transactions.length }</p>
                         { metaData_list }
                     </div>
                     <div className="image">

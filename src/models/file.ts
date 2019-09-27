@@ -1,11 +1,11 @@
 export class MetaData {
-  v?:string;
-  name?:string;
-  type:string = '';
-  size?:string;
-  lastModified:number = 0;
+  private v?:string;
+  private name?:string;
+  private type:string = '';
+  private size?:string;
+  private lastModified:number = 0;
   //encrypt?:boolean;
-  length:number = 0;
+  private length:number = 0;
   
   constructor(fields: any) {
     Object.assign(this, fields);

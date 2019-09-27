@@ -1,21 +1,21 @@
 import { createAction, createReducer } from 'redux-act';
 import {
-    generateWallet,
-    successGenerateWallet
+    createWallet,
+    successCreateWallet
 } from '../actions';
 
 const initialState = {
   walletName: '',
-  generate_address: '',
-  generate_privateKey: '',
+  address: '',
+  privateKey: '',
 };
 
 const wallet = createReducer({
-  [generateWallet]: (state, action) => {
+  [createWallet]: (state, action) => {
       const newState = Object.assign({}, state, action);
       return newState;
   },
-  [successGenerateWallet]: (state, action) => {
+  [successCreateWallet]: (state, action) => {
       const newState = Object.assign({}, state, action);
       return newState;
   }
