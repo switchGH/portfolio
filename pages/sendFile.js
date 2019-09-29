@@ -7,7 +7,7 @@ import {
     createWallet
 } from '../src/stores/actions';
 
-class ConvertFile extends Component {
+class SendFile extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -143,4 +143,4 @@ class ConvertFile extends Component {
     }
 }
 
-export default connect(datas => datas)(ConvertFile);
+export default connect(datas => datas)(SendFile);
