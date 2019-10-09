@@ -73,7 +73,7 @@ class GetFile extends Component {
                         <img src={file.base64} />
                     </div>
                     <div>
-                        Click <span onClick={() => Router.push('/convertFile')}>Input File</span>
+                        Click <span onClick={() => Router.push('/sendFile')}>Input File</span>
                     </div>
                 </div>
 

@@ -82,7 +82,7 @@ class SendFile extends Component {
                     </div>
 
                     <div>
-                        Click <span onClick={() => Router.push('/')}>Get File</span>
+                        Click <span onClick={() => Router.push('/getFile')}>Get File</span>
                     </div>
                 </div>
 
