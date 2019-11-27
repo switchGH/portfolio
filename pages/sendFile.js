@@ -1,11 +1,66 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withStyles } from '@material-ui/core/styles'
 
 import Router from 'next/router';
 import {
     convertFile,
     createWallet
 } from '../src/stores/actions';
+
+const styles = {
+    parent: {
+        position: 'relative'
+    },
+    body: {
+        textAlign: 'center',
+        margin: '0',
+        width: '100%',
+        position: 'absolute'
+    },
+    title: {
+        margin: '0',
+        width: '100%',
+        paddingTop: '80px',
+        paddingBottom: '20px',
+        lineHeight: '1.15',
+        fontSize: '48px',
+        textAlign: 'center'
+    },
+    text: {
+        fontSize: '21px'
+    },
+    generate_wallet: {
+        paddingBottom: '20px'
+    },
+    generate_button: {
+        width: '180px',
+        height: '30px',
+        fontSize: '20px'
+    },
+    input_address: {
+        paddingBottom: '20px'
+    },
+    input_privateKey: {
+        paddingBottom: '20px'
+    },
+    input_area: {
+        width: '500px',
+        height: '30px',
+        fontSize: '20px'
+    },
+    input_file: {
+        height: '30px',
+        paddingBottom: '20px'
+    },
+    convert_button: {
+        width: '120px',
+        height: '30px',
+        fontSize: '20px',
+        fontWeight: 'bold'
+    }
+}
 
 class SendFile extends Component {
     constructor(props) {
@@ -43,30 +98,30 @@ class SendFile extends Component {
     }
 
     render() {
-        const { wallet, file } = this.props;
+        const { wallet, file, classes } = this.props;
         return (
-            <div className="parent">
+            <div className={classes.parent}>
                 {/* <Head title="Input File" /> */}
-                <div className="body">
-                    <h1 className="title">NEMファイル共有システム</h1>
-                    <div className="generate_wallet">
-                        <p className="text">アドレス生成</p>
+                <div className={classes.body}>
+                    <h1 className={classes.title}>NEMファイル共有システム</h1>
+                    <div className={classes.generate_wallet}>
+                        <p className={classes.text}>アドレス生成</p>
                         { wallet.address && <p>Address：{ wallet.address }</p> }
                         { wallet.privateKey && <p>PrivateKey：{ wallet.privateKey }</p> }
-                        <button className="generate_button" onClick={this.onCreateWallet.bind(this)}>Generate Wallet</button>
+                        <button className={classes.generate_button} onClick={this.onCreateWallet.bind(this)}>Generate Wallet</button>
                     </div>
-                    <div className="input_address">
-                        <input type="text" className="input_area" placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} />
+                    <div className={classes.input_address}>
+                        <input type="text" className={classes.input_area} placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} />
                     </div>
-                    <div className="input_privateKey">
-                        <input type="text" className="input_area" placeholder="Please PrivateKey." onChange={this.changePrivateKey.bind(this)} />
+                    <div className={classes.input_privateKey}>
+                        <input type="text" className={classes.input_area} placeholder="Please PrivateKey." onChange={this.changePrivateKey.bind(this)} />
                     </div>
-                    <div className="input_file">
+                    <div className={classes.input_file}>
                         {/* <div id="preview" /> */}
                         <input type="file" id="file" size="30" onChange={this.changeFile.bind(this)} />
                     </div>
-                    <button className="convert_button" onClick={this.onClick.bind(this)}>Convert</button>
-                    <div className="output_transaction">
+                    <button className={classes.convert_button} onClick={this.onClick.bind(this)}>Convert</button>
+                    <div>
                         <p>{ file.transactions }</p>
                         {/* {
                             (() => {
@@ -85,62 +140,12 @@ class SendFile extends Component {
                         Click <span onClick={() => Router.push('/getFile')}>Get File</span>
                     </div>
                 </div>
-
-                <style jsx>{`
-                    .parent {
-                        position: relative;
-                    }
-                    .body {
-                        text-align: center;
-                        margin: 0;
-                        width: 100%;
-                        position: absolute;
-                    }
-                    .title {
-                        margin: 0;
-                        width: 100%;
-                        padding-top: 80px;
-                        padding-bottom: 20px;
-                        line-height: 1.15;
-                        font-size: 48px;
-                        text-align: center;
-                    }
-                    .text {
-                        font-size: 21px;
-                    }
-                    .generate_wallet {
-                        padding-bottom: 20px;
-                    }
-                    .generate_button {
-                        width: 180px;
-                        height: 30px;
-                        font-size: 20px;
-                    }
-                    .input_address {
-                        padding-bottom: 20px;
-                    }
-                    .input_privateKey {
-                        padding-bottom: 20px;
-                    }
-                    .input_area {
-                        width: 500px;
-                        height: 30px;
-                        font-size: 20px;
-                    }
-                    .input_file {
-                        height: 30px;
-                        padding-bottom: 20px;
-                    }
-                    .convert_button {
-                        width: 120px;
-                        height: 30px;
-                        font-size: 20px;
-                        font-weight: bold;
-                    }
-                `}</style>
             </div>
         );
     }
 }
 
-export default connect(datas => datas)(SendFile);
+export default compose(
+    withStyles(styles),
+    connect(datas => datas)
+)(SendFile)

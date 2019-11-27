@@ -7,6 +7,7 @@
     "-d": "next build && pm2 start npm --name 'next' -- run start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.7.0",
     "nem-library": "^2.0.0-RC4",
     "nem-sdk": "^1.6.7",
     "net": "^1.0.2",

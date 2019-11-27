@@ -31,9 +31,10 @@ export class Convert {
     this.cAddress = address;
     this.privateKey = privateKey;
     this.fileToUpload = file.item(0);
+    console.log(this.fileToUpload);
   }
 
-  getFile(file: any) {
+  getFile(file: any): any {
     return file;
   }
 
@@ -48,7 +49,7 @@ export class Convert {
     //this.sumFee = 0;
   }
 
-  createBase64() {
+  createBase64(): void {
     if(!this.fileToUpload){
       throw new Error('ファイルがありません');
     }
@@ -88,7 +89,7 @@ export class Convert {
     fr.readAsDataURL(this.fileToUpload);
   }
 
-  createTransaction() {
+  createTransaction(): void {
     console.log('called createTransaction');
     let transaction:any;
 
@@ -106,7 +107,7 @@ export class Convert {
         transaction = this.nem.createTransactions(b, this.cAddress);
         this.transactions[count] = JSON.stringify(transaction);
         count++;
-        console.log(transaction);
+        console.log(typeof transaction);
         //this.nem.sendTransaction(transaction, this.privateKey);
     }
   }
