@@ -4,9 +4,7 @@ declare function unescape(s: string): string;
 
 export class Util {
   public static splitByLength(str:string, length:number) {
-    console.log('base64の文字数');
-    console.log(str);
-    console.log(str.length);
+    console.log('base64の文字数: ' + str.length);
     var resultArray:string[] = [];
     // 文字列がない場合
     if(!str || !length || length < 1){
@@ -17,7 +15,7 @@ export class Util {
     let end:number = start + length;
     while(start < str.length) {
       resultArray[index] = str.substring(start, end);
-      console.log(resultArray[index].length);
+      // console.log(resultArray[index].length);
       index++;
       start = end;
       end = start + length;

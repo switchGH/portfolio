@@ -97,12 +97,10 @@ export class NemProvider {
       domain: 'nistest.opening-line.jp',
       port: 7890
     }]);
-    console.log(transferTransaction.fee);
+    console.log('手数料：' + transferTransaction.fee);
     const account = Account.createWithPrivateKey(privateKey);
-    console.log(account.address);
+    //console.log(transferTransaction);
     const signedTransaction = account.signTransaction(transferTransaction);
-    // console.log('transactionHttp');
-    // console.log(transactionHttp);
     transactionHttp.announceTransaction(signedTransaction).subscribe(x => console.log(x.transactionHash));
   }
 

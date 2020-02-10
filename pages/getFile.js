@@ -101,7 +101,8 @@ class GetFile extends Component {
                         <h1 className={classes.title}>NEMファイル共有システム</h1>
                     </div>
                     <div className={classes.input_address}>
-                        <input type="text" className={classes.input_area} placeholder="Please NEM Address." a value={address} />
+                        {/* <input type="text" className={classes.input_area} placeholder="Please NEM Address." value={address} /> */}
+                        <input type="text" className={classes.input_area} placeholder="Please NEM Address." onChange={this.changeAddress.bind(this)} value={address}/>
                     </div>
                     <div className={classes.input_key}>
                         <div>
