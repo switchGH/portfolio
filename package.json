@@ -9,7 +9,7 @@
   "dependencies": {
     "@material-ui/core": "^4.7.0",
     "nem-library": "^2.0.0-RC4",
-    "nem-sdk": "^1.6.7",
+    "nem-sdk": "^1.6.11",
     "net": "^1.0.2",
     "next": "^9.0.2",
     "react": "^16.8.6",
